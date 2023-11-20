@@ -1,33 +1,48 @@
 import { useState, useEffect } from "react"
 import ObjectItem from "../ObjectItem/ObjectItem"
 
+const API_URL = 'https://jsonplaceholder.typicode.com/todos/'
 
-const ObjectsList = (props) => {
+const ObjectsList = () => {
     const [objects, setObjects] = useState([])
     const [error, setError ] = useState('')
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        fetch(fetch('https://jsonplaceholder.typicode.com/todos/')
-        .then(response => response.json())
-        .then((objects) => {
-            setObjects(objects)
-        }))
-        .catch((error) => setError(error.message))
+        async function fetchData() {
+            try {
+                const res = await fetch(API_URL)
+                const objects = await res.json()
+                setObjects(objects)
+            } catch (error) {
+                setError(error.message)
+            }
+            setIsLoading(false)
+        }
+        fetchData()
     }, [])
+
+
+    // useEffect(() => {
+    //     fetch(API_URL)
+    //         .then(response => response.json())
+    //         .then((objects) => setObjects(objects))
+    //         .catch((error) => )
+    //         .finally(() => setIsLoading(false))
+    // }, [])
 
     if (error) {
         return <h1>Error: {error}</h1>
     }
 
-
     return (
-        <div>
-            {objects.map((object) => <ObjectItem key={object.id} {...object} />)}
-        </div>
+        <>
+        <h1>Демонтажи</h1>
+        <hr />
+            {isLoading ? <h1>Loading...</h1> : objects.map((object) => <ObjectItem key={object.id} {...object} />)}
+        </>
     )
 }
-       
-
 
 
 export default ObjectsList

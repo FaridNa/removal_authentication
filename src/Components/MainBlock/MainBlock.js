@@ -5,7 +5,6 @@ const MainBlock = () => {
   
     
     return <div className="">
-      <p>Демонтажи</p>
       <ObjectsList/>
     </div>
 }
