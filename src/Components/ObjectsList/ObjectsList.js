@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react"
 import ObjectItem from "../ObjectItem/ObjectItem"
+import styles from './ObjectsList.module.css'
+
+
+console.log(styles)
 
 const API_URL = 'https://jsonplaceholder.typicode.com/todos/'
 
@@ -9,7 +13,7 @@ const ObjectsList = () => {
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        async function fetchData() {
+        const fetchData = async () => {
             try {
                 const res = await fetch(API_URL)
                 const objects = await res.json()
@@ -22,15 +26,6 @@ const ObjectsList = () => {
         fetchData()
     }, [])
 
-
-    // useEffect(() => {
-    //     fetch(API_URL)
-    //         .then(response => response.json())
-    //         .then((objects) => setObjects(objects))
-    //         .catch((error) => )
-    //         .finally(() => setIsLoading(false))
-    // }, [])
-
     if (error) {
         return <h1>Error: {error}</h1>
     }
@@ -38,8 +33,10 @@ const ObjectsList = () => {
     return (
         <>
         <h1>Демонтажи</h1>
+        <div className={styles}>
         <hr />
             {isLoading ? <h1>Loading...</h1> : objects.map((object) => <ObjectItem key={object.id} {...object} />)}
+        </div>
         </>
     )
 }
